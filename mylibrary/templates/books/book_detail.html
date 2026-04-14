@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        {% if book.cover %}
+            <img src="{{ book.cover.url }}" class="img-fluid rounded" alt="{{ book.title }}">
+        {% else %}
+            <div class="bg-light text-center p-5 rounded">Нет обложки</div>
+        {% endif %}
+    </div>
+    <div class="col-md-8">
+        <h1>{{ book.title }}</h1>
+        <p><strong>Автор:</strong> <a href="{% url 'author_detail' book.author.id %}">{{ book.author.name }}</a></p>
+        <p><strong>Год издания:</strong> {{ book.publication_year|default:"не указан" }}</p>
+        <p><strong>Жанры:</strong>
+            {% for genre in book.genres.all %}
+                <span class="badge bg-secondary">{{ genre.name }}</span>
+            {% endfor %}
+        </p>
+        <p><strong>Описание:</strong></p>
+        <p>{{ book.description }}</p>
+        
+        {% if user.is_authenticated %}
+    <form method="post" action="{% url 'toggle_favorite' book.id %}" class="mt-3">
+        {% csrf_token %}
+        <button type="submit" class="btn {% if is_favorite %}btn-danger{% else %}btn-success{% endif %}">
+            {% if is_favorite %}
+                Убрать из избранного
+            {% else %}
+                Добавить в избранное
+            {% endif %}
+        </button>
+    </form>
+{% else %}
+    <div class="alert alert-info mt-3" role="alert">
+        🔒 Чтобы добавлять книги в <strong>избранное</strong>, оставлять <strong>отзывы</strong> и <strong>оценки</strong>, пожалуйста, 
+        <a href="{% url 'login' %}" class="alert-link">войдите</a> или 
+        <a href="{% url 'register' %}" class="alert-link">зарегистрируйтесь</a>.
+    </div>
+{% endif %}
+
+        <a href="{{ book.get_google_books_search_url }}" class="btn btn-primary mt-3" target="_blank" rel="noopener noreferrer">
+    Искать в Google Книгах
+</a>
+        
+        <a href="{% url 'book_list' %}" class="btn btn-secondary mt-3">Назад</a>
+    </div>
+</div>
+<!-- Отзывы и рейтинг -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <h3>Отзывы и оценки</h3>
+        {% if avg_rating %}
+            <p><strong>Средний рейтинг:</strong> {{ avg_rating }} / 5</p>
+        {% else %}
+            <p>Пока нет оценок.</p>
+        {% endif %}
+        
+        <hr>
+        
+        {% if user.is_authenticated %}
+            <a href="{% url 'add_review' book.id %}" class="btn btn-outline-primary mb-3">Написать отзыв</a>
+        {% else %}
+            <div class="alert alert-info">
+                Чтобы оставить отзыв, <a href="{% url 'login' %}">войдите</a> или <a href="{% url 'register' %}">зарегистрируйтесь</a>.
+            </div>
+        {% endif %}
+        
+        <div class="reviews-list">
+            {% for review in reviews %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <strong>{{ review.user.username }}</strong>
+                            <span class="text-muted">{{ review.created_at|date:"d.m.Y H:i" }}</span>
+                        </div>
+                        {% if review.rating %}
+                            <span class="badge bg-warning text-dark">Оценка: {{ review.rating }}/5</span>
+                        {% endif %}
+                        <p class="mt-2">{{ review.review|linebreaks }}</p>
+                    </div>
+                </div>
+            {% empty %}
+                <p>Пока нет отзывов. Будьте первым!</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

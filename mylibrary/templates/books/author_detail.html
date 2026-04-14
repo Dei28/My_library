@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ author.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ author.name }}</h1>
+<p><strong>Дата рождения:</strong> {{ author.birth_date|default:"Не указана" }}</p>
+<p><strong>Биография:</strong> {{ author.bio|default:"Нет данных" }}</p>
+
+<h2 class="mt-4">Книги автора</h2>
+<div class="row">
+    {% for book in author.books.all %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">{{ book.publication_year|default:"год не указан" }}</p>
+                    <a href="{% url 'book_detail' book.id %}" class="btn btn-sm btn-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>У этого автора пока нет книг.</p>
+    {% endfor %}
+</div>
+<a href="{% url 'book_list' %}" class="btn btn-secondary mt-3">На главную</a>
+{% endblock %}
