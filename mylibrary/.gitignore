@@ -1,0 +1,52 @@
+# Виртуальное окружение
+venv/
+env/
+ENV/
+.venv
+
+# База данных (SQLite)
+db.sqlite3
+*.sqlite3
+
+# Загруженные медиафайлы (обложки, аватары)
+media/
+
+# Файлы статики (если собирал командой collectstatic)
+staticfiles/
+static/
+
+# Кэш и байт-код Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py~ 
+
+# Файлы миграций (обычно их хранят в репозитории, но можно исключить)
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# Логи
+*.log
+
+# Переменные окружения и секреты
+.env
+.secret
+config.local.py
+
+# Настройки IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Файлы отчётов тестов
+.coverage
+htmlcov/
+.tox/
+
+# Папки с зависимостями (если используешь pipenv/poetry)
+.pipenv/
+.poetry/
