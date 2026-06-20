@@ -19,6 +19,7 @@ class BookListView(ListView):
     template_name = 'books/book_list.html'
     context_object_name = 'books'
     paginate_by = 6
+    ordering = ['-added_at'] 
 
     def get_queryset(self):
         queryset = super().get_queryset()
