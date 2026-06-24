@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Ошибка сервера{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h1 class="display-1">500</h1>
+            <p class="lead">Что-то пошло не так на сервере. Мы уже работаем над этим.</p>
+            <a href="{% url 'book_list' %}" class="btn btn-primary">На главную</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

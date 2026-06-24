@@ -25,8 +25,9 @@ SECRET_KEY = 'django-insecure-smp6nv!s2r_3e7(lw8kp#c^elohqy35kqal=p@py_bdf4xz*gp
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
+# DEBUG = False
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -40,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'books',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +125,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@booksite.com'
 LOGIN_REDIRECT_URL = '/'
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
